@@ -1,7 +1,7 @@
 package test
 
 import (
-	"fmt"
+	"reflect"
 	"testing"
 
 	"caputo.io/scoundrel/components"
@@ -56,25 +56,16 @@ func TestDrawCard(t *testing.T) {
 
 func TestShuffleDeck(t *testing.T) {
 	setup(t)
-	originalDeck := make(components.Deck, 52)
+	originalDeck := make(components.Deck, len(testDeck))
 	copy(originalDeck, testDeck)
 	originalLength := len(originalDeck)
 	testDeck.Shuffle()
 
-	fmt.Printf("TestDeck: %v, OriginalDeck: %v", testDeck, originalDeck)
-
 	if len(testDeck) != 52 {
-		t.Errorf("Length of deck (%d) after shuffle was not %d", originalLength, len(testDeck))
-	}
-	numSamePlace := 0
-
-	for i := range len(testDeck) {
-		if testDeck[i] == (originalDeck)[i] {
-			numSamePlace += 1
-		}
+		t.Errorf("Length of deck (%d) after shuffle was not %d", len(testDeck), originalLength)
 	}
 
-	if numSamePlace == originalLength {
+	if reflect.DeepEqual(originalDeck, testDeck) {
 		t.Error("Deck has same order after shuffling")
 	}
 }
