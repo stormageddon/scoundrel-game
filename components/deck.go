@@ -12,6 +12,7 @@ type Card struct {
 	Name  string
 	Value int
 	Suit  Suits
+	Id    string
 }
 
 type Deck []Card
@@ -23,8 +24,6 @@ const (
 	Diamond       = "Diamonds"
 )
 
-//var currentDeck []Card = []Card{}
-
 func NewDeck() (Deck, error) {
 	deck := []Card{}
 	for _, suit := range []Suits{Spade, Heart, Club, Diamond} {
@@ -35,22 +34,25 @@ func NewDeck() (Deck, error) {
 			switch i {
 			case 1:
 				name = "Ace"
-				value = 11
+				value = 14
 			case 11:
 				name = "Jack"
-				value = 10
+				value = 11
 			case 12:
 				name = "Queen"
-				value = 10
+				value = 12
 			case 13:
 				name = "King"
-				value = 10
+				value = 13
 			default:
 				name = fmt.Sprintf("%v", i)
 				value = i
 			}
 
-			card := Card{Name: fmt.Sprintf("%v of %s", name, suit), Value: value, Suit: suit}
+			card := Card{Name: fmt.Sprintf("%v of %s", name, suit),
+				Value: value,
+				Suit:  suit,
+				Id:    fmt.Sprintf("%c%c", name[0], suit[0])}
 			deck = append(deck, card)
 		}
 	}
@@ -58,10 +60,6 @@ func NewDeck() (Deck, error) {
 	//currentDeck = deck
 	return deck, nil
 }
-
-// func GetDeck() *[]Card {
-// 	return &currentDeck
-// }
 
 func (d *Deck) Empty() {
 	*d = []Card{}
@@ -74,6 +72,7 @@ func (d *Deck) Draw() (*Card, error) {
 
 	card := &(*d)[0]
 	*d = (*d)[1:]
+
 	return card, nil
 }
 
@@ -84,5 +83,13 @@ func (d *Deck) Shuffle() {
 
 		(*d)[i], (*d)[randIndex] = (*d)[randIndex], (*d)[i]
 	}
+}
 
+func (d *Deck) Remove(cardName string) {
+	for i, c := range *d {
+		if c.Name == cardName {
+			*d = append((*d)[:i], (*d)[i+1:]...)
+			break
+		}
+	}
 }

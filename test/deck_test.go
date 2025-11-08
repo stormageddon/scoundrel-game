@@ -21,14 +21,11 @@ func setup(t *testing.T) {
 func TestCreateDeck(t *testing.T) {
 	setup(t)
 
-	//d := deck.Create()
 	l := len(testDeck)
 
 	if testDeck == nil || len(testDeck) != 52 {
 		t.Errorf("Expected size %v but deck was size %v", 52, l)
 	}
-
-	//t.Cleanup(func() { deck.Empty() })
 }
 
 func TestDrawFromEmptyDeck(t *testing.T) {
@@ -67,5 +64,21 @@ func TestShuffleDeck(t *testing.T) {
 
 	if reflect.DeepEqual(originalDeck, testDeck) {
 		t.Error("Deck has same order after shuffling")
+	}
+}
+
+func TestRemoveCard(t *testing.T) {
+	setup(t)
+
+	testDeck.Remove("Ace of Spades")
+
+	if len(testDeck) != 51 {
+		t.Errorf("Expected deck size %v but got %v", 51, len(testDeck))
+	}
+
+	for _, card := range testDeck {
+		if card.Name == "Ace of Spades" {
+			t.Error("Ace of Spades was not correctly removed")
+		}
 	}
 }
