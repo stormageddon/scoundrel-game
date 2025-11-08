@@ -110,15 +110,7 @@ func PrintHeader() {
 		equippedWeaponName = player.equippedWeapon.Name
 	}
 	fmt.Printf("Round %d | Health: %d | Weapon: %s\n", round, player.health, equippedWeaponName)
-	fmt.Print("Room: {")
-	for i := 0; i < len(room); i++ {
-		fmt.Printf("%d. %s", i+1, room[i].Id)
-		if i < len(room)-1 {
-			fmt.Print(", ")
-		}
-	}
-	fmt.Println("}")
-	//	fmt.Printf("Room: {1. %s, 2. %s, 3. %s, 4. %s}\n", room[0].Id, room[1].Id, room[2].Id, room[3].Id)
+	printRoom()
 	fmt.Println("--------------------------------")
 }
 
