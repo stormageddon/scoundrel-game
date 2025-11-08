@@ -30,6 +30,7 @@ func NewDeck() (Deck, error) {
 		for i := 1; i <= 13; i++ {
 			value := 0
 			name := ""
+			id := ""
 
 			switch i {
 			case 1:
@@ -49,10 +50,16 @@ func NewDeck() (Deck, error) {
 				value = i
 			}
 
+			if value != 10 {
+				id = fmt.Sprintf("%c%c", name[0], suit[0])
+			} else {
+				id = fmt.Sprintf("%s%c", name, suit[0])
+			}
+
 			card := Card{Name: fmt.Sprintf("%v of %s", name, suit),
 				Value: value,
 				Suit:  suit,
-				Id:    fmt.Sprintf("%c%c", name[0], suit[0])}
+				Id:    id}
 			deck = append(deck, card)
 		}
 	}
