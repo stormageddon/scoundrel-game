@@ -3,6 +3,7 @@ package test
 import (
 	"testing"
 
+	"caputo.io/scoundrel/components"
 	"caputo.io/scoundrel/game"
 )
 
@@ -33,7 +34,7 @@ func TestPlayerCanHeal(t *testing.T) {
 	player := game.NewPlayer()
 
 	player.TakeDamage(10)
-	player.Heal(1)
+	player.Heal(components.Card{Value: 1, Suit: components.Heart})
 	playerHealth := player.GetHealth()
 
 	if playerHealth != 11 {
@@ -44,7 +45,7 @@ func TestPlayerCanHeal(t *testing.T) {
 func TestPlayerCannotHealOverMax(t *testing.T) {
 	player := game.NewPlayer()
 
-	player.Heal(10)
+	player.Heal(components.Card{Value: 10, Suit: components.Heart})
 	playerHealth := player.GetHealth()
 
 	if playerHealth > 20 {
