@@ -100,3 +100,7 @@ func (d *Deck) Remove(cardName string) {
 		}
 	}
 }
+
+func (d *Deck) AddToBottom(card ...Card) {
+	*d = append(*d, card...)
+}

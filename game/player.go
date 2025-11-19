@@ -11,10 +11,12 @@ const maxHealth = 20
 type Player struct {
 	health         int
 	equippedWeapon *components.Card
+	isDead         bool
+	weaponMaxValue int
 }
 
 func NewPlayer() Player {
-	player := Player{maxHealth, nil}
+	player := Player{maxHealth, nil, false, 99}
 
 	return player
 }
@@ -24,13 +26,28 @@ func (player *Player) FightMonster(card *components.Card) bool {
 		fmt.Println("Cannot fight with card that is not a spade or club")
 		return false
 	}
+
 	fmt.Println("Fighting monster: ", card.Name)
-	player.TakeDamage(card.Value)
+	damageToTake := card.Value
+	if player.equippedWeapon != nil && card.Value < player.weaponMaxValue {
+		damageToTake = max(0, damageToTake-player.equippedWeapon.Value)
+	}
+	player.TakeDamage(damageToTake)
+	player.weaponMaxValue = max(0, card.Value)
+
+	if player.weaponMaxValue == 0 {
+		fmt.Print("Weapon broke!")
+		player.equippedWeapon = nil
+	}
 	return true
 }
 
 func (player *Player) TakeDamage(damage int) {
 	player.health -= damage
+	if player.health < 0 {
+		player.health = 0
+		player.isDead = true
+	}
 }
 
 func (player *Player) Heal(card components.Card) bool {
